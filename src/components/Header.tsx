@@ -1,17 +1,15 @@
 import React from 'react'
-import { FaUserCircle } from 'react-icons/fa'
-import { useLocationContext } from '../context/LocationContext'
+import { FaBars } from 'react-icons/fa'
+import logo from '../assets/logo.svg' // Replace this with the actual logo path
 
-export default function Header() {
-  const { profile } = useLocationContext()
-
+export default function AppHeader({ toggleSidebar }: { toggleSidebar: () => void }) {
   return (
-    <header className="flex justify-between items-center bg-white shadow px-6 py-3">
-      <div className="text-xl font-semibold">Welcome to SafeBite</div>
-      <div className="flex items-center gap-2 text-gray-700">
-        <FaUserCircle className="text-2xl" />
-        <span>{profile?.full_name || 'User'}</span>
-      </div>
+    <header className="flex items-center justify-between bg-white shadow px-4 py-3 border-b">
+      <button className="text-teal-700 text-2xl md:hidden" onClick={toggleSidebar}>
+        <FaBars />
+      </button>
+      <img src={logo} alt="SafeBite Logo" className="h-8 mx-auto" />
+      <div className="w-6" /> {/* spacer */}
     </header>
   )
 }
