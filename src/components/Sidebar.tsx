@@ -36,20 +36,25 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`bg-gradient-to-b from-teal-700 to-cyan-500 text-white h-full transform transition-transform duration-200 ease-in-out ${
-        isCollapsed ? '-translate-x-full md:translate-x-0 md:w-16' : 'w-64'
-      } fixed md:static z-40`}
+      className={`
+        fixed md:static inset-y-0 left-0 z-50
+        bg-gradient-to-b from-teal-700 to-cyan-500 text-white 
+        transition-transform duration-300 ease-in-out
+        ${isCollapsed ? '-translate-x-full md:translate-x-0 md:w-16' : 'translate-x-0 w-64'}
+        h-full flex flex-col
+      `}
     >
       <div className="flex items-center justify-between p-4 md:justify-center">
         {!isCollapsed && <h1 className="text-xl font-bold">Menu</h1>}
         <button
           onClick={toggleCollapse}
-          className="text-white md:hidden focus:outline-none text-lg"
+          className="md:hidden text-white text-xl focus:outline-none"
         >
           ✕
         </button>
       </div>
-      <nav className="space-y-2 px-2">
+
+      <nav className="flex-1 space-y-2 px-2 overflow-y-auto">
         {navItems.map(({ to, icon, label }) => (
           <Link
             key={to}
@@ -63,7 +68,8 @@ export default function Sidebar({
           </Link>
         ))}
       </nav>
-      <div className="absolute bottom-0 w-full p-3 border-t border-white">
+
+      <div className="p-3 border-t border-white">
         <button className="flex items-center gap-2 w-full text-left hover:text-red-300">
           <FaSignOutAlt />
           {!isCollapsed && <span>Logout</span>}
