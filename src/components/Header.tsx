@@ -1,15 +1,12 @@
 import React from 'react'
-import { FaBars } from 'react-icons/fa'
-import logo from '../assets/logo.svg' // Replace this with the actual logo path
 
 export default function AppHeader({ toggleSidebar }: { toggleSidebar: () => void }) {
   return (
-    <header className="flex items-center justify-between bg-white shadow px-4 py-3 border-b">
-      <button className="text-teal-700 text-2xl md:hidden" onClick={toggleSidebar}>
-        <FaBars />
+    <header className="bg-white shadow px-4 py-3 flex items-center justify-between sticky top-0 z-30">
+      <button onClick={toggleSidebar} className="text-xl md:hidden">
+        ☰
       </button>
-      <img src={logo} alt="SafeBite Logo" className="h-8 mx-auto" />
-      <div className="w-6" /> {/* spacer */}
+      <h1 className="text-lg font-semibold mx-auto">SafeBite</h1>
     </header>
   )
 }
