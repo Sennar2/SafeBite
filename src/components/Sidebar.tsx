@@ -1,81 +1,70 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
-  FaBars,
-  FaSignOutAlt,
   FaTachometerAlt,
+  FaUsersCog,
   FaClipboardList,
-  FaThermometerHalf,
+  FaTemperatureLow,
   FaChartLine,
+  FaChartBar,
   FaFileExport,
-  FaUserAlt,
-  FaCogs
+  FaUserCheck,
+  FaCogs,
+  FaSignOutAlt,
 } from 'react-icons/fa'
-import { supabase } from '../supabase/client'
+
+const navItems = [
+  { to: '/', icon: <FaTachometerAlt />, label: 'Dashboard' },
+  { to: '/admin', icon: <FaUsersCog />, label: 'Admin' },
+  { to: '/checklist', icon: <FaClipboardList />, label: 'Checklist' },
+  { to: '/temperatures', icon: <FaTemperatureLow />, label: 'Temperatures' },
+  { to: '/progress', icon: <FaChartLine />, label: 'Progress' },
+  { to: '/temperature-trends', icon: <FaChartBar />, label: 'Trends' },
+  { to: '/export', icon: <FaFileExport />, label: 'Export' },
+  { to: '/user-activity', icon: <FaUserCheck />, label: 'User Activity' },
+  { to: '/checklist-admin', icon: <FaCogs />, label: 'Checklist Admin' },
+]
 
 export default function Sidebar({
   isCollapsed,
-  toggleCollapse
+  toggleCollapse,
 }: {
   isCollapsed: boolean
   toggleCollapse: () => void
 }) {
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    window.location.href = '/login'
-  }
-
-  const menu = [
-    { to: '/', icon: <FaTachometerAlt />, label: 'Dashboard' },
-    { to: '/admin', icon: <FaUserAlt />, label: 'Admin' },
-    { to: '/checklist', icon: <FaClipboardList />, label: 'Checklist' },
-    { to: '/temperatures', icon: <FaThermometerHalf />, label: 'Temperatures' },
-    { to: '/progress', icon: <FaChartLine />, label: 'Progress' },
-    { to: '/temperature-trends', icon: <FaChartLine />, label: 'Trends' },
-    { to: '/export', icon: <FaFileExport />, label: 'Export' },
-    { to: '/user-activity', icon: <FaUserAlt />, label: 'User Activity' },
-    { to: '/checklist-admin', icon: <FaCogs />, label: 'Checklist Admin' },
-  ]
+  const location = useLocation()
 
   return (
     <aside
-      className={`bg-gradient-to-b from-teal-700 to-cyan-500 text-white transition-all duration-300 h-full ${
-        isCollapsed ? 'w-16' : 'w-64'
-      } overflow-hidden flex flex-col`}
+      className={`bg-gradient-to-b from-teal-700 to-cyan-500 text-white
+      h-full transition-all duration-300 ease-in-out
+      ${isCollapsed ? 'w-16' : 'w-64'} 
+      fixed md:static z-40`}
     >
-      <div className="flex items-center justify-end p-3">
-        <button
-          onClick={toggleCollapse}
-          className="text-white hover:text-gray-300 focus:outline-none"
-        >
-          <FaBars />
+      <div className="flex justify-between items-center p-4">
+        {!isCollapsed && <h1 className="text-xl font-bold">Menu</h1>}
+        <button onClick={toggleCollapse} className="text-white text-xl md:hidden">
+          ☰
         </button>
       </div>
 
-      <nav className="flex-1 flex flex-col mt-4 space-y-1">
-        {menu.map(({ to, icon, label }) => (
+      <nav className="flex flex-col gap-2 p-2">
+        {navItems.map((item) => (
           <Link
-            key={to}
-            to={to}
-            title={label}
-            className={`flex items-center gap-3 px-4 py-2 hover:bg-teal-800 transition ${
-              isCollapsed ? 'justify-center' : ''
+            key={item.to}
+            to={item.to}
+            className={`flex items-center gap-3 p-2 rounded hover:bg-white hover:text-teal-700 ${
+              location.pathname === item.to ? 'bg-white text-teal-700 font-bold' : ''
             }`}
           >
-            <span className="text-lg">{icon}</span>
-            {!isCollapsed && <span className="text-sm truncate">{label}</span>}
+            <span className="text-lg">{item.icon}</span>
+            {!isCollapsed && <span>{item.label}</span>}
           </Link>
         ))}
       </nav>
 
-      <div className="p-4 mt-auto">
-        <button
-          onClick={handleLogout}
-          title="Logout"
-          className={`flex items-center w-full gap-2 text-red-100 hover:text-white hover:bg-red-600 px-2 py-2 rounded transition ${
-            isCollapsed ? 'justify-center' : ''
-          }`}
-        >
+      <div className="mt-auto p-4">
+        <button className="flex items-center gap-2 hover:text-red-300">
           <FaSignOutAlt />
           {!isCollapsed && <span>Logout</span>}
         </button>
