@@ -5,11 +5,14 @@ import { Outlet } from 'react-router-dom'
 
 export default function AppLayout() {
   const [collapsed, setCollapsed] = useState(false)
+  const leftMargin = collapsed ? 'ml-16' : 'ml-64'
 
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar collapsed={collapsed} toggleCollapsed={() => setCollapsed(prev => !prev)} />
-      <div className="flex flex-col flex-1 overflow-auto">
+      <div
+        className={`flex flex-col flex-1 overflow-auto transition-all duration-300 ${leftMargin}`}
+      >
         <Header />
         <main className="p-6 bg-gray-100 flex-1 overflow-auto">
           <Outlet />
