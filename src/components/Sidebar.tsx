@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   FaTachometerAlt,
@@ -26,34 +26,28 @@ const navItems = [
   { to: '/checklist-admin', icon: <FaCogs />, label: 'Checklist Admin' },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({
+  isCollapsed,
+  toggleCollapse,
+}: {
+  isCollapsed: boolean
+  toggleCollapse: () => void
+}) {
   const location = useLocation()
-
-  const [isCollapsed, setIsCollapsed] = useState(
-    localStorage.getItem('sidebarCollapsed') === 'true'
-  )
-
-  const toggleCollapse = () => {
-    const newState = !isCollapsed
-    setIsCollapsed(newState)
-    localStorage.setItem('sidebarCollapsed', newState.toString())
-  }
+  const sidebarWidth = isCollapsed ? 'w-16' : 'w-64'
 
   return (
     <aside
-      className={`bg-gradient-to-b from-teal-700 to-cyan-500 text-white h-screen
-      transition-all duration-300 ease-in-out
-      ${isCollapsed ? 'w-16' : 'w-64'} 
-      fixed md:static z-50 flex flex-col`}
+      className={`bg-gradient-to-b from-teal-700 to-cyan-500 text-white h-screen transition-all duration-300 fixed md:static z-40 flex flex-col ${sidebarWidth}`}
     >
-      <div className="flex justify-between items-center p-4">
-        {!isCollapsed && <h1 className="text-xl font-bold">SafeBite</h1>}
+      <div className="flex items-center justify-between p-4">
+        {!isCollapsed && <h1 className="text-xl font-bold">Menu</h1>}
         <button onClick={toggleCollapse} className="text-white text-xl">
           <FaBars />
         </button>
       </div>
 
-      <nav className="flex flex-col gap-1 p-2 overflow-y-auto">
+      <nav className="flex flex-col gap-2 p-2">
         {navItems.map((item) => (
           <Link
             key={item.to}
@@ -65,7 +59,7 @@ export default function Sidebar() {
             }`}
           >
             <span className="text-lg">{item.icon}</span>
-            {!isCollapsed && <span className="whitespace-nowrap">{item.label}</span>}
+            {!isCollapsed && <span>{item.label}</span>}
           </Link>
         ))}
       </nav>
