@@ -27,22 +27,22 @@ const navItems = [
 ]
 
 export default function Sidebar({
-  isCollapsed,
-  toggleCollapse,
+  collapsed,
+  toggleCollapsed,
 }: {
-  isCollapsed: boolean
-  toggleCollapse: () => void
+  collapsed: boolean
+  toggleCollapsed: () => void
 }) {
   const location = useLocation()
-  const sidebarWidth = isCollapsed ? 'w-16' : 'w-64'
+  const sidebarWidth = collapsed ? 'w-16' : 'w-64'
 
   return (
     <aside
-      className={`bg-gradient-to-b from-teal-700 to-cyan-500 text-white h-screen transition-all duration-300 fixed md:static z-40 flex flex-col ${sidebarWidth}`}
+      className={`h-screen bg-gradient-to-b from-teal-700 to-cyan-500 text-white transition-all duration-300 flex flex-col ${sidebarWidth}`}
     >
       <div className="flex items-center justify-between p-4">
-        {!isCollapsed && <h1 className="text-xl font-bold">Menu</h1>}
-        <button onClick={toggleCollapse} className="text-white text-xl">
+        {!collapsed && <h1 className="text-xl font-bold">SafeBite</h1>}
+        <button onClick={toggleCollapsed} className="text-white text-xl">
           <FaBars />
         </button>
       </div>
@@ -59,7 +59,7 @@ export default function Sidebar({
             }`}
           >
             <span className="text-lg">{item.icon}</span>
-            {!isCollapsed && <span>{item.label}</span>}
+            {!collapsed && <span className="whitespace-nowrap">{item.label}</span>}
           </Link>
         ))}
       </nav>
@@ -67,7 +67,7 @@ export default function Sidebar({
       <div className="mt-auto p-4 border-t border-teal-600">
         <button className="flex items-center gap-2 hover:text-red-300">
           <FaSignOutAlt />
-          {!isCollapsed && <span>Logout</span>}
+          {!collapsed && <span>Logout</span>}
         </button>
       </div>
     </aside>
