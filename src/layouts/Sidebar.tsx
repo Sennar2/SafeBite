@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import {
   FaTachometerAlt,
   FaUsersCog,
@@ -12,19 +13,28 @@ import {
   FaCogs,
   FaSignOutAlt,
   FaTimes,
+  FaCrown,
 } from 'react-icons/fa'
 
-const navItems = [
-  { to: '/', icon: <FaTachometerAlt />, label: 'Dashboard' },
-  { to: '/admin', icon: <FaUsersCog />, label: 'Admin' },
-  { to: '/checklist', icon: <FaClipboardList />, label: 'Checklist' },
-  { to: '/temperatures', icon: <FaTemperatureLow />, label: 'Temperatures' },
-  { to: '/progress', icon: <FaChartLine />, label: 'Progress' },
-  { to: '/temperature-trends', icon: <FaChartBar />, label: 'Trends' },
-  { to: '/export', icon: <FaFileExport />, label: 'Export' },
-  { to: '/user-activity', icon: <FaUserCheck />, label: 'User Activity' },
-  { to: '/checklist-admin', icon: <FaCogs />, label: 'Checklist Admin' },
-]
+const getNavItems = (isSuperUser: boolean) => {
+  const baseItems = [
+    { to: '/', icon: <FaTachometerAlt />, label: 'Dashboard' },
+    { to: '/admin', icon: <FaUsersCog />, label: 'Admin' },
+    { to: '/checklist', icon: <FaClipboardList />, label: 'Checklist' },
+    { to: '/temperatures', icon: <FaTemperatureLow />, label: 'Temperatures' },
+    { to: '/progress', icon: <FaChartLine />, label: 'Progress' },
+    { to: '/temperature-trends', icon: <FaChartBar />, label: 'Trends' },
+    { to: '/export', icon: <FaFileExport />, label: 'Export' },
+    { to: '/user-activity', icon: <FaUserCheck />, label: 'User Activity' },
+    { to: '/checklist-admin', icon: <FaCogs />, label: 'Checklist Admin' },
+  ]
+  
+  if (isSuperUser) {
+    baseItems.push({ to: '/super-admin', icon: <FaCrown />, label: 'Super Admin' })
+  }
+  
+  return baseItems
+}
 
 export default function Sidebar({
   collapsed,
@@ -38,6 +48,8 @@ export default function Sidebar({
   toggleMobileOpen: () => void
 }) {
   const location = useLocation()
+  const { profile } = useAuth()
+  const navItems = getNavItems(profile?.role === 'super_user')
   const width = collapsed ? 'w-16' : 'w-64'
 
   return (
@@ -68,7 +80,7 @@ export default function Sidebar({
 
       {/* Navigation */}
       <nav className="flex flex-col gap-2 p-2">
-        {navItems.map((item) => (
+        {navItems?.map((item) => (
           <Link
             key={item.to}
             to={item.to}

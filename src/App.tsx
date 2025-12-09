@@ -12,15 +12,16 @@ import TempTrends from './pages/TempTrends'
 import UserActivity from './pages/UserActivity'
 import AdminChecklistManager from './pages/AdminChecklistManager'
 import ChecklistCalendar from './pages/ChecklistCalendar'
+import SuperAdmin from './pages/SuperAdmin'
 import AppLayout from './layouts/AppLayout'
-import { LocationProvider } from './context/LocationContext'
+import { AuthProvider } from './context/AuthContext'
+import { MultiTenancyProvider } from './context/MultiTenancyContext'
 import ProtectedRoute from './auth/ProtectedRoute'
-import { AuthProvider } from './auth/AuthContext'
 
 export default function App() {
   return (
     <AuthProvider>
-      <LocationProvider>
+      <MultiTenancyProvider>
         <Router>
           <Routes>
             {/* Public */}
@@ -44,13 +45,14 @@ export default function App() {
               <Route path="/progress" element={<Progress />} />
               <Route path="/checklist-admin" element={<AdminChecklistManager />} />
               <Route path="/checklist-calendar" element={<ChecklistCalendar />} />
+              <Route path="/super-admin" element={<SuperAdmin />} />
             </Route>
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
-      </LocationProvider>
+      </MultiTenancyProvider>
     </AuthProvider>
   )
 }
